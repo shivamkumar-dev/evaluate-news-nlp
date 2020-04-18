@@ -1,36 +1,74 @@
 const dotenv = require('dotenv');
 dotenv.config();
-
-var aylien = require("aylien_textapi");
-// set aylien API credentias
-var textapi = new aylien({
-    application_id: process.env.API_ID,
-    application_key: process.env.API_KEY
+const aylien = require('aylien_textapi');
+// set aylien API credentials
+const textapi = new aylien({
+  application_id: process.env.API_ID,
+  application_key: process.env.API_KEY,
 });
 
+const path = require('path');
+const mockAPIResponse = require('./mockAPI.js');
 
+// Setup empty JS object to act as endpoint for all routes
+projectData = {};
 
+// Require Express to run server and routes
+const express = require('express');
 
-var path = require('path')
-const express = require('express')
-const mockAPIResponse = require('./mockAPI.js')
+// Start up an instance of app
+const app = express();
 
-const app = express()
+/* Middleware */
+const bodyParser = require('body-parser');
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(express.static('dist'))
+// Cors for cross origin allowance
+const cors = require('cors');
+app.use(cors());
 
-console.log(__dirname)
+app.use(express.static('dist'));
+
+console.log(__dirname);
 
 app.get('/', function (req, res) {
-    res.sendFile('dist/index.html')
-    // res.sendFile(path.resolve('src/client/views/index.html'))
-})
+  res.sendFile('dist/index.html');
+  // res.sendFile(path.resolve('src/client/views/index.html'));
+});
 
-// designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
-})
+const port = 8081;
+
+// Setup Server
+const server = app.listen(port, listening);
+
+// Callback to debug
+function listening() {
+  console.log('server running');
+  console.log(`running on localhost: ${port}`);
+}
 
 app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
-})
+  res.send(mockAPIResponse);
+});
+
+// POST
+app.post('/add', (req, res) => {
+  projectData.sentence = req.body.sentence;
+  res.send(projectData);
+});
+
+// GET
+app.get('/sentiment', function (req, res) {
+  textapi.sentiment(
+    {
+      text: projectData.sentence,
+    },
+    function (error, response) {
+      if (error === null) {
+        res.send(response);
+      }
+    }
+  );
+});
