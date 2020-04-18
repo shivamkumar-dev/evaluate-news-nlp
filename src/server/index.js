@@ -35,7 +35,6 @@ console.log(__dirname);
 
 app.get('/', function (req, res) {
   res.sendFile('dist/index.html');
-  // res.sendFile(path.resolve('src/client/views/index.html'));
 });
 
 const port = 8081;
@@ -43,7 +42,6 @@ const port = 8081;
 // Setup Server
 const server = app.listen(port, listening);
 
-// Callback to debug
 function listening() {
   console.log('server running');
   console.log(`running on localhost: ${port}`);
@@ -53,13 +51,13 @@ app.get('/test', function (req, res) {
   res.send(mockAPIResponse);
 });
 
-// POST
+// POST Route
 app.post('/add', (req, res) => {
   projectData.sentence = req.body.sentence;
   res.send(projectData);
 });
 
-// GET
+// GET Route
 app.get('/sentiment', function (req, res) {
   textapi.sentiment(
     {

@@ -4,7 +4,7 @@ function handleSubmit(event) {
   const inputValue = document.getElementById('sentence').value;
   const inputLength = inputValue.length;
 
-  Client.checkForSentence(inputValue, inputLength);
+  Client.checkForQuestion(inputValue, inputLength);
 }
 
 export { handleSubmit };

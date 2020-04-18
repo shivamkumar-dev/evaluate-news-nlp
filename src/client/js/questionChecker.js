@@ -1,5 +1,5 @@
-function checkForSentence(value, length) {
-  if (length > 0 && length < 281) {
+function checkForQuestion(value, length) {
+  if (length > 0 && length < 50) {
     postData('http://localhost:8081/add', { sentence: value }).then(() => {
       getData('http://localhost:8081/sentiment').then((data) => {
         document.getElementById('results').innerHTML = `
@@ -15,7 +15,7 @@ function checkForSentence(value, length) {
       });
     });
   } else {
-    alert('Please enter a sentence up to 280 characters!');
+    alert('Please enter a sentence up to 50 characters!');
   }
 }
 
@@ -44,4 +44,4 @@ const getData = async (url) => {
   }
 };
 
-export { checkForSentence };
+export { checkForQuestion };
